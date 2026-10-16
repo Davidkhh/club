@@ -1,0 +1,189 @@
+// Соответствует prisma/migrations/0_init/migration.sql (исходная SQL-схема).
+// CHECK-ограничения (price_cents >= 0, bookings.status, leads.status) живут в SQL и в Prisma не выражаются:
+// допустимые значения проверяются zod в Server Actions.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  client
+  instructor
+  admin
+  @@map("user_role")
+}
+
+enum SubscriptionStatus {
+  active
+  expired
+  cancelled
+  @@map("subscription_status")
+}
+
+enum ClassLevel {
+  beginner
+  intermediate
+  advanced
+  all
+  @@map("class_level")
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+  @@map("payment_status")
+}
+
+model User {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String   @unique
+  passwordHash String?  @map("password_hash")
+  name         String
+  phone        String?
+  role         UserRole @default(client)
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  instructors   Instructor[]
+  subscriptions Subscription[]
+  bookings      Booking[]
+  payments      Payment[]
+
+  @@map("users")
+}
+
+model Instructor {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId   String? @map("user_id") @db.Uuid
+  name     String
+  bio      String?
+  photoUrl String? @map("photo_url")
+  isActive Boolean @default(true) @map("is_active")
+
+  user    User?       @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  classes YogaClass[]
+
+  @@map("instructors")
+}
+
+model Plan {
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String
+  description  String?
+  priceCents   Int     @map("price_cents")
+  currency     String  @default("RUB") @db.Char(3)
+  durationDays Int     @map("duration_days")
+  isActive     Boolean @default(true) @map("is_active")
+
+  subscriptions Subscription[]
+
+  @@map("plans")
+}
+
+model Subscription {
+  id       String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId   String             @map("user_id") @db.Uuid
+  planId   String             @map("plan_id") @db.Uuid
+  status   SubscriptionStatus @default(active)
+  startsAt DateTime           @map("starts_at") @db.Timestamptz(6)
+  endsAt   DateTime           @map("ends_at") @db.Timestamptz(6)
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  plan     Plan      @relation(fields: [planId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  payments Payment[]
+
+  @@index([userId, status], map: "idx_subs_user_status")
+  @@map("subscriptions")
+}
+
+model YogaClass {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String
+  description  String?
+  instructorId String?    @map("instructor_id") @db.Uuid
+  level        ClassLevel @default(all)
+  startsAt     DateTime   @map("starts_at") @db.Timestamptz(6)
+  durationMin  Int        @default(60) @map("duration_min")
+  capacity     Int?
+  streamUrl    String?    @map("stream_url")
+  isPublished  Boolean    @default(false) @map("is_published")
+
+  instructor Instructor? @relation(fields: [instructorId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  bookings   Booking[]
+
+  @@index([startsAt], map: "idx_classes_starts_at")
+  @@map("classes")
+}
+
+model Booking {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  classId   String   @map("class_id") @db.Uuid
+  status    String   @default("booked") // booked | attended | cancelled (CHECK в SQL)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  class YogaClass @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([userId, classId])
+  @@index([classId], map: "idx_bookings_class")
+  @@map("bookings")
+}
+
+model Payment {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String        @map("user_id") @db.Uuid
+  subscriptionId String?       @map("subscription_id") @db.Uuid
+  amountCents    Int           @map("amount_cents")
+  currency       String        @default("RUB") @db.Char(3)
+  status         PaymentStatus @default(pending)
+  provider       String?
+  providerRef    String?       @map("provider_ref")
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("payments")
+}
+
+model Lead {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  contact   String
+  message   String?
+  source    String?
+  status    String   @default("new") // new | in_progress | done | spam (CHECK в SQL)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([status, createdAt(sort: Desc)], map: "idx_leads_status")
+  @@map("leads")
+}
+
+model Post {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug        String    @unique
+  title       String
+  body        String
+  coverUrl    String?   @map("cover_url")
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("posts")
+}
+
+model Testimonial {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authorName  String  @map("author_name")
+  text        String
+  isPublished Boolean @default(false) @map("is_published")
+
+  @@map("testimonials")
+}
