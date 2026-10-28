@@ -8,7 +8,7 @@ export default async function AdminHome() {
   const { list } = await getAdminTeachers();
   const persistent = storeInfo().persistent;
   return (
-    <main id="top" className="adm-main">
+    <main id="content" tabIndex={-1} className="adm-main">
       <h1>Панель управления</h1>
       {!persistent && <p className="adm-notice">Постоянное хранилище не подключено: изменения временные. Подробности в «Настройках».</p>}
       <ul className="adm-cards">

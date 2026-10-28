@@ -11,7 +11,7 @@ export default async function TeachersAdmin({ searchParams }: { searchParams: Pr
   const { list, fromStatic } = await getAdminTeachers();
   const rows = list.filter((t) => !q || t.name.toLowerCase().includes(q)).sort((a, b) => a.order - b.order);
   return (
-    <main id="top" className="adm-main">
+    <main id="content" tabIndex={-1} className="adm-main">
       <h1>Преподаватели</h1>
       {sp.saved && <p className="adm-ok" role="status">Профиль сохранён.</p>}
       {sp.deleted && <p className="adm-ok" role="status">Профиль удалён.</p>}

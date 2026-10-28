@@ -3,29 +3,31 @@ export const site = {
   email: 'info@clubschastya-yoga.ru',
   tagline: 'Время для счастья — сейчас, место для счастья — здесь!',
   description: 'Онлайн-студия йоги, цигун, медитаций и практик осознанной заботы о себе для тех, кто хочет чувствовать себя спокойнее, здоровее и счастливее в любом возрасте и в любом теле.',
-  joinUrl: 'https://clubschastya-yoga.ru/main#price',
-  trialUrl: 'https://clubschastya-yoga.ru/main#price',
-  sourceUrl: 'https://clubschastya-yoga.ru/main',
+  // Все кнопки ведут на страницы нового сайта; на старый сайт ссылок нет.
+  trialUrl: '/join',              // пробный урок: форма e-mail
+  joinUrl: '/join?for=club',      // заявка на вступление в клуб: форма e-mail
+  priceUrl: '/#price',            // блок тарифа на главной
+  // Юридические документы пока на платформе GetCourse (тексты не копировались) — заменить своими страницами, когда клуб их передаст.
   offerUrl: 'https://clubschastya-yoga.getcourse.ru/legal',
   privacyUrl: 'https://clubschastya-yoga.getcourse.ru/privacypolicy',
 };
 
 export const practices = [
-  { number: '01', title: 'Йога для здоровья', category: 'Движение', text: 'Мягкая практика для начинающих и поддержания хорошего самочувствия.', href: 'https://clubschastya-yoga.ru/yoga_beginer', image: 'https://fs-thb01.getcourse.ru/fileservice/file/thumbnail/h/8a7c781292d81de983b30fa9c827f78b.png/s/s1200x/a/939939/sc/170' },
-  { number: '02', title: 'Цигун и энергия', category: 'Дыхание', text: 'Дыхание, движение и восстановление внутренних ресурсов.', href: 'https://clubschastya-yoga.ru/tsigun', image: 'https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/f0071569e32f91333f87b3e037bf6408.png/s/s1200x/a/939939/sc/8' },
-  { number: '03', title: 'Расслабление', category: 'Восстановление', text: 'Глубокий отдых для тела и нервной системы.', href: 'https://clubschastya-yoga.ru/relax_yoga', image: 'https://fs-thb02.getcourse.ru/fileservice/file/thumbnail/h/456e7ac5f8f155768b2a33e8d4e7486d.png/s/s1200x/a/939939/sc/170' },
-  { number: '04', title: 'Медитации', category: 'Внимание', text: 'Практики для спокойствия, сна и эмоционального баланса.', href: 'https://clubschastya-yoga.ru/main#program', image: 'https://fs.getcourse.ru/fileservice/file/download/a/939939/sc/61/h/c8b28388b579a716282fcda3665e0271.png' },
-  { number: '05', title: 'Йогатерапия', category: 'Здоровье', text: 'Занятия с акцентом на здоровье сердечно-сосудистой системы и радость движения.', href: 'https://clubschastya-yoga.ru/yoga_therapy', image: 'https://fs-thb01.getcourse.ru/fileservice/file/thumbnail/h/8a7c781292d81de983b30fa9c827f78b.png/s/s1200x/a/939939/sc/170' },
-  { number: '06', title: 'Полезные семинары', category: 'Знания', text: 'Встречи о здоровье, питании, эмоциях и долголетии.', href: 'https://clubschastya-yoga.ru/main#program', image: 'https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/602e1ff9af3ae733e64163e79e3c2ce1.png/s/s1200x/a/939939/sc/244' },
+  { number: '01', title: 'Йога для здоровья', category: 'Движение', text: 'Мягкая практика для начинающих и поддержания хорошего самочувствия.', href: '/practices/yoga' },
+  { number: '02', title: 'Цигун и энергия', category: 'Дыхание', text: 'Дыхание, движение и восстановление внутренних ресурсов.', href: '/practices/qigong' },
+  { number: '03', title: 'Расслабление', category: 'Восстановление', text: 'Глубокий отдых для тела и нервной системы.', href: '/practices/relax' },
+  { number: '04', title: 'Медитации', category: 'Внимание', text: 'Практики для спокойствия, сна и эмоционального баланса.', href: '/practices/meditation' },
+  { number: '05', title: 'Йогатерапия', category: 'Здоровье', text: 'Занятия с акцентом на здоровье сердечно-сосудистой системы и радость движения.', href: '/practices/therapy' },
+  { number: '06', title: 'Полезные семинары', category: 'Знания', text: 'Встречи о здоровье, питании, эмоциях и долголетии.', href: '/practices/seminars' },
 ];
 
 export const schedule = [
-  { day: 'Понедельник', time: '07:00–08:00', teacher: 'Сильвия', title: 'Йогатерапия', href: 'https://clubschastya-yoga.ru/yoga_therapy' },
-  { day: 'Вторник', time: '18:00–19:00', teacher: 'Ольга', title: 'Полезные простукивания и массаж точек', href: 'https://clubschastya-yoga.ru/useful_hit' },
-  { day: 'Среда', time: '07:00–08:00', teacher: 'Юлия', title: 'Йога для начинающих', href: 'https://clubschastya-yoga.ru/yoga_beginer' },
-  { day: 'Четверг', time: '07:00–08:00', teacher: 'Рахашан', title: 'Цигун, дыхание, медитация', href: 'https://clubschastya-yoga.ru/tsigun' },
-  { day: 'По анонсу', time: 'Дата объявляется в анонсе', teacher: 'Аида', title: 'Релакс-йога', href: 'https://clubschastya-yoga.ru/relax_yoga' },
-  { day: 'По анонсу', time: 'Дата объявляется в анонсе', teacher: 'Алина', title: 'Психологическое кафе', href: 'https://clubschastya-yoga.ru/cafe' },
+  { day: 'Понедельник', time: '07:00–08:00', teacher: 'Сильвия', title: 'Йогатерапия', href: '/practices/therapy' },
+  { day: 'Вторник', time: '18:00–19:00', teacher: 'Ольга', title: 'Полезные простукивания и массаж точек', href: '/useful-hit' },
+  { day: 'Среда', time: '07:00–08:00', teacher: 'Юлия', title: 'Йога для начинающих', href: '/practices/yoga' },
+  { day: 'Четверг', time: '07:00–08:00', teacher: 'Рахашан', title: 'Цигун, дыхание, медитация', href: '/practices/qigong' },
+  { day: 'По анонсу', time: 'Дата объявляется в анонсе', teacher: 'Аида', title: 'Релакс-йога', href: '/practices/relax' },
+  { day: 'Воскресенье', time: '16:00–18:00', teacher: 'Алина', title: 'Психологическое кафе', href: '/practices/cafe' },
 ];
 
 export const testimonials = [

@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: 'Вход — Клуб Счастья
 export default async function AdminLoginPage() {
   if (await getSession()) redirect('/admin');
   return (
-    <main id="top" className="adm adm-center">
+    <main id="content" tabIndex={-1} className="adm adm-center">
       <section className="adm-card-login">
         <p className="adm-brand">Клуб Счастья</p>
         <h1>Вход для администратора</h1>

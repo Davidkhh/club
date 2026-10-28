@@ -8,7 +8,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 // Если адрес не настроен, честно отвечаем 503: ложного «успеха» не будет.
 // Формат запроса под ваш сервис рассылки меняется только здесь.
 export async function POST(req: Request) {
-  let body: { email?: unknown; consent?: unknown; company?: unknown };
+  let body: { email?: unknown; consent?: unknown; company?: unknown; intent?: unknown };
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad_request' }, { status: 400 }); }
 
   if (typeof body.company === 'string' && body.company.trim()) return NextResponse.json({ ok: true }); // ловушка для ботов
@@ -23,7 +23,8 @@ export async function POST(req: Request) {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, source: 'club-site-join', consent: true, at: new Date().toISOString() }),
+      // source: пробный урок или заявка на вступление — чтобы сервис рассылки различал их
+      body: JSON.stringify({ email, source: body.intent === 'club' ? 'club-site-membership' : 'club-site-trial', consent: true, at: new Date().toISOString() }),
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return NextResponse.json({ error: 'provider_error' }, { status: 502 });

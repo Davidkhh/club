@@ -10,7 +10,7 @@ export default async function SettingsPage() {
   const store = storeInfo();
   const gc = getcourseStatus();
   return (
-    <main id="top" className="adm-main">
+    <main id="content" tabIndex={-1} className="adm-main">
       <h1>Настройки</h1>
       <SettingsForm email={s.contactEmail} />
       <h2 className="adm-h2">Состояние</h2>

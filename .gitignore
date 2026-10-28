@@ -3,3 +3,8 @@ node_modules/
 out/
 .DS_Store
 !.env.example
+
+# локальные секреты — не публиковать
+.env*.local
+.env
+*.tsbuildinfo
