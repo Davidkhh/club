@@ -1,0 +1,32 @@
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\soft\club\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * C:\soft\club\v28\package-lock.json
+
+   ▲ Next.js 15.5.28
+   - Local:        http://localhost:3100
+   - Network:      http://172.18.0.1:3100
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1681ms
+ ○ Compiling /api/subscribe ...
+ ✓ Compiled /api/subscribe in 1093ms (320 modules)
+ POST /api/subscribe 200 in 1224ms
+ ○ Compiling /admin/leads ...
+ ⚠ ./app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css
+Warning
+
+(233:65) autoprefixer: end value has mixed support, consider using flex-end instead
+
+Import trace for requested module:
+./app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css
+./app/globals.css
+ GET /admin/leads 307 in 2303ms
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\soft\club\v28\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[10].use[2]!C:\soft\club\v28\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[10].use[3]!C:\soft\club\v28\app\globals.css': No serializer registered for Warning
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> Array { 1 items } -> webpack/lib/ModuleWarning -> Warning
+   Reload env: .env.local
+ ✓ Compiled /admin/leads in 98ms (230 modules)
+[?25h

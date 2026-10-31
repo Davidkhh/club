@@ -156,7 +156,11 @@ model Payment {
 model Lead {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
-  contact   String
+  email     String
+  phone     String
+  access    String   @default("free") // free | paid (CHECK в SQL)
+  ip        String?
+  contact   String?
   message   String?
   source    String?
   status    String   @default("new") // new | in_progress | done | spam (CHECK в SQL)

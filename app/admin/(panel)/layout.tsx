@@ -17,7 +17,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
           <form action={logoutAction}><button className="adm-btn adm-btn-ghost" type="submit">Выйти</button></form>
         </div>
       </header>
-      <nav className="adm-nav" aria-label="Разделы"><Link href="/admin">Обзор</Link><Link href="/admin/teachers">Преподаватели</Link><Link href="/admin/settings">Настройки</Link></nav>
+      <nav className="adm-nav" aria-label="Разделы"><Link href="/admin">Обзор</Link><Link href="/admin/leads">Заявки</Link><Link href="/admin/teachers">Преподаватели</Link><Link href="/admin/settings">Настройки</Link></nav>
       {children}
     </div>
   );

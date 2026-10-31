@@ -15,10 +15,10 @@ export const site = {
 export const practices = [
   { number: '01', title: 'Йога для здоровья', category: 'Движение', text: 'Мягкая практика для начинающих и поддержания хорошего самочувствия.', href: '/practices/yoga' },
   { number: '02', title: 'Цигун и энергия', category: 'Дыхание', text: 'Дыхание, движение и восстановление внутренних ресурсов.', href: '/practices/qigong' },
-  { number: '03', title: 'Расслабление', category: 'Восстановление', text: 'Глубокий отдых для тела и нервной системы.', href: '/practices/relax' },
-  { number: '04', title: 'Медитации', category: 'Внимание', text: 'Практики для спокойствия, сна и эмоционального баланса.', href: '/practices/meditation' },
-  { number: '05', title: 'Йогатерапия', category: 'Здоровье', text: 'Занятия с акцентом на здоровье сердечно-сосудистой системы и радость движения.', href: '/practices/therapy' },
-  { number: '06', title: 'Полезные семинары', category: 'Знания', text: 'Встречи о здоровье, питании, эмоциях и долголетии.', href: '/practices/seminars' },
+  { number: '03', title: 'Медитации', category: 'Внимание', text: 'Практики для спокойствия, сна и эмоционального баланса.', href: '/practices/meditation' },
+  { number: '04', title: 'Йогатерапия', category: 'Здоровье', text: 'Занятия с акцентом на здоровье сердечно-сосудистой системы и радость движения.', href: '/practices/therapy' },
+  { number: '05', title: 'Полезные семинары', category: 'Знания', text: 'Встречи о здоровье, питании, эмоциях и долголетии.', href: '/practices/seminars' },
+  { number: '06', title: 'Психологическое кафе', category: 'Поддержка', text: 'Клубные встречи с ведущей Алиной: тёплое общение и пространство без оценок.', href: '/practices/cafe' },
 ];
 
 export const schedule = [
@@ -26,7 +26,6 @@ export const schedule = [
   { day: 'Вторник', time: '18:00–19:00', teacher: 'Ольга', title: 'Полезные простукивания и массаж точек', href: '/useful-hit' },
   { day: 'Среда', time: '07:00–08:00', teacher: 'Юлия', title: 'Йога для начинающих', href: '/practices/yoga' },
   { day: 'Четверг', time: '07:00–08:00', teacher: 'Рахашан', title: 'Цигун, дыхание, медитация', href: '/practices/qigong' },
-  { day: 'По анонсу', time: 'Дата объявляется в анонсе', teacher: 'Аида', title: 'Релакс-йога', href: '/practices/relax' },
   { day: 'Воскресенье', time: '16:00–18:00', teacher: 'Алина', title: 'Психологическое кафе', href: '/practices/cafe' },
 ];
 

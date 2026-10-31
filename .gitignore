@@ -8,3 +8,7 @@ out/
 .env*.local
 .env
 *.tsbuildinfo
+
+# локальная база регистраций
+/data/
+*.db

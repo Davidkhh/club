@@ -24,6 +24,7 @@ export default async function Home() {
     <Header />
     <main id="content" tabIndex={-1}>
       <section className="hero section-shell">
+        <div className="liquid-bg" aria-hidden="true"><span /><span /><span /></div>
         <div className="hero-copy">
           <p className="eyebrow"><span className="eyebrow-dot" aria-hidden="true" />Онлайн-клуб, практики для жизни</p>
           <h1>Время для счастья{' '}— <em>сейчас.</em></h1>

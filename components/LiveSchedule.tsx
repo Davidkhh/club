@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { schedule } from '@/lib/content';
+import Reveal from './Reveal';
 
 // dow — день недели (0 = воскресенье), h — час начала по Москве, d — длительность в минутах (по умолчанию 60)
 const slots: Record<string, { dow: number; h: number; d?: number }> = { 'Йогатерапия': { dow: 1, h: 7 }, 'Полезные простукивания и массаж точек': { dow: 2, h: 18 }, 'Йога для начинающих': { dow: 3, h: 7 }, 'Цигун, дыхание, медитация': { dow: 4, h: 7 }, 'Психологическое кафе': { dow: 0, h: 16, d: 120 } };
@@ -33,15 +34,15 @@ export default function LiveSchedule() {
           : <><b>Ближайший эфир через {fmt(next.mins)}:</b> {next.title}<small>{local} по вашему времени</small></>)
         : <b>Считаем время до эфира…</b>}</div>
     </div>
-    <div className="schedule-list" id="schedule">{schedule.map((item) => {
+    <Reveal stagger><div className="schedule-list" id="schedule">{schedule.map((item, i) => {
       const isNext = next?.title === item.title;
       const isLive = isNext && next?.live;
-      return <div key={item.title} className={`schedule-row${isNext ? ' is-next' : ''}${isLive ? ' is-live' : ''}`}>
+      return <div key={item.title} className={`schedule-row stagger-item${isNext ? ' is-next' : ''}${isLive ? ' is-live' : ''}`} style={{ '--i': i } as CSSProperties}>
         <span className="schedule-index">{isNext ? <><span className="live-dot" aria-hidden="true" /><span className="sr-only">{isLive ? 'Идёт сейчас' : 'Ближайший эфир'}</span></> : ''}</span>
         <span className="schedule-day">{item.day}<small>{slots[item.title] ? `${item.time} по Москве` : item.time}</small></span>
         <div className="schedule-title"><Link href={item.href}>{item.title} <span aria-hidden="true">→</span></Link><small>Ведёт: {item.teacher}</small></div>
         <Link className="schedule-open" href={item.href} aria-label={`Подробнее: ${item.title}`}><span aria-hidden="true">→</span></Link>
       </div>;
-    })}</div>
+    })}</div></Reveal>
   </>;
 }

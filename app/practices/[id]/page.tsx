@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import type { CSSProperties } from 'react';
 import { Link } from 'next-view-transitions';
 import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
+import Reveal from '@/components/Reveal';
 import Footer from '@/components/Footer';
 import { site } from '@/lib/content';
 import { practiceById, practiceInfo } from '@/lib/practice-info';
@@ -69,6 +71,11 @@ export default async function PracticePage({ params }: Props) {
           <div>{prog.about.map((t) => <p key={t}>{t}</p>)}</div>
         </section>
 
+        {prog.topics && <section className="uh-split section-shell" id="topics">
+          <h2>Темы <em>встреч</em></h2>
+          <div><ul className="uh-parts">{prog.topics.map((t) => <li key={t}>{t}</li>)}</ul></div>
+        </section>}
+
         {prog.steps && <section className="uh-lesson section-shell" id="lesson">
           <h2>Как проходит <em>занятие?</em></h2>
           <p className="uh-note">{prog.stepsNote ? `${prog.stepsNote} ` : ''}Структура из описания программы, состав конкретного занятия может отличаться.</p>
@@ -122,13 +129,13 @@ export default async function PracticePage({ params }: Props) {
 
       {others.length > 0 && <section className="pp-more section-shell" aria-labelledby="more-h">
         <h2 id="more-h">Другие практики клуба</h2>
-        <ul>{others.map((x) => <li key={x.id}>
+        <Reveal stagger><ul>{others.map((x, i) => <li key={x.id} className="stagger-item" style={{ '--i': i } as CSSProperties}>
           <Link href={x.href}>
             <h3 style={{ viewTransitionName: `pt-${x.id}` }}>{x.title}</h3>
             <p>{x.summary}</p>
             <span className="pp-more-go">Подробнее <span aria-hidden="true">→</span></span>
           </Link>
-        </li>)}</ul>
+        </li>)}</ul></Reveal>
       </section>}
 
       <section className="page-cta section-shell panel">

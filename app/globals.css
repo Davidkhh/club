@@ -126,9 +126,20 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
 .wordmark{display:flex;align-items:center;gap:10px;font:700 10px/1.2 var(--display);letter-spacing:.08em}
 .wordmark-mark{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--olive);border-radius:50%;font:italic 26px var(--serif);letter-spacing:-.02em;color:var(--green)}
 .nav{display:flex;align-items:center;gap:30px;font-size:14px;color:var(--ink-soft)}
+/* пункты меню: растущее из центра подчёркивание */
+.nav a:not(.nav-cta){position:relative;display:inline-flex;align-items:center;padding-bottom:3px;overflow:hidden;transition:color .25s,transform .18s var(--ease-glass)}
+.nav a:not(.nav-cta)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--green);transform:scaleX(0);transform-origin:center;transition:transform .35s var(--ease-glass)}
 .nav a:not(.nav-cta):hover{color:var(--green)}
-.nav-cta{padding:12px 16px;border:1px solid var(--ink);border-radius:var(--radius-sm);color:var(--ink)}
+.nav a:not(.nav-cta):hover::after{transform:scaleX(1)}
+.nav-cta{position:relative;overflow:hidden;padding:12px 16px;border:1px solid var(--ink);border-radius:var(--radius-sm);color:var(--ink);transition:transform .18s var(--ease-glass),background .25s,color .25s}
+.nav-cta:hover{background:var(--ink);color:var(--white)}
 .nav-cta span{margin-left:10px}
+/* лёгкое «вдавливание» при нажатии */
+.nav a:active,.nav-cta:active,.menu-toggle:active,.wordmark:active{transform:scale(.95)}
+.wordmark,.menu-toggle{position:relative;overflow:hidden}
+/* волна-рябь (создаётся в Header.tsx при нажатии) */
+.ripple{position:absolute;border-radius:50%;pointer-events:none;transform:scale(0);opacity:.85;background:radial-gradient(circle,rgba(242,177,52,.55),rgba(242,177,52,0) 70%);animation:ripple .6s ease-out forwards}
+@keyframes ripple{to{transform:scale(1);opacity:0}}
 .menu-toggle{display:none}
 /* меню сворачивается раньше, чем перестаёт помещаться в строку (6 пунктов + кнопка ≈ 900px) */
 @media(max-width:1080px){
@@ -144,8 +155,19 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
 
 /* ---------- 7. Hero ---------- */
 /* padding-bottom резервирует место под нижнюю строку .hero-bottom (она absolute), иначе на неё наезжают арка и .hero-note */
-.hero{position:relative;display:grid;grid-template-columns:1.05fr .95fr;column-gap:60px;min-height:690px;padding-top:82px;padding-bottom:84px}
-.hero-copy{z-index:1;padding-top:25px}
+.hero{position:relative;isolation:isolate;display:grid;grid-template-columns:1.05fr .95fr;column-gap:60px;min-height:690px;padding-top:82px;padding-bottom:84px}
+.hero-copy{position:relative;z-index:1;padding-top:25px}
+/* «жидкие» цветные пятна в палитре клуба, медленно плывут за героем */
+.liquid-bg{position:absolute;inset:-8% -4%;z-index:-1;pointer-events:none;overflow:hidden;filter:blur(46px) saturate(1.05);opacity:.5}
+.liquid-bg span{position:absolute;display:block;width:46%;aspect-ratio:1;border-radius:50%}
+.liquid-bg span:nth-child(1){left:-6%;top:4%;background:radial-gradient(circle,rgba(242,177,52,.6),transparent 68%);animation:blob-a 26s ease-in-out infinite}
+.liquid-bg span:nth-child(2){right:-6%;top:26%;background:radial-gradient(circle,rgba(123,176,140,.55),transparent 68%);animation:blob-b 33s ease-in-out infinite}
+.liquid-bg span:nth-child(3){left:30%;bottom:-14%;background:radial-gradient(circle,rgba(255,217,120,.5),transparent 70%);animation:blob-c 40s ease-in-out infinite}
+@keyframes blob-a{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22%,14%) scale(1.16)}}
+@keyframes blob-b{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-18%,18%) scale(1.1)}}
+@keyframes blob-c{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(14%,-16%) scale(1.13)}}
+@media(prefers-reduced-motion:reduce){.liquid-bg span{animation:none}}
+@media(prefers-reduced-transparency:reduce){.liquid-bg{display:none}}
 .section-shell.hero h1{font-size:clamp(48px,6.1vw,88px)}
 .hero-sub{margin:15px 0 18px;font:italic 500 27px var(--serif)}
 .hero-description{max-width:480px;font-size:19px;line-height:1.85;color:var(--muted)}
@@ -187,6 +209,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
   box-shadow:inset 0 2px 1px rgba(255,255,255,.85),inset 0 -14px 24px rgba(255,255,255,.12),inset 0 0 0 1.5px rgba(255,255,255,.55),0 0 0 1px rgba(39,74,54,.25),0 16px 36px -10px rgba(39,74,54,.55)}
 /* в Chrome/Edge — настоящее преломление фона */
 .lg-refract .arch-lens{backdrop-filter:url(#lg-lens) saturate(1.7)}
+/* «жидкое стекло»: при разрешённом движении линза и панели слегка колышутся, как вода */
+@media(prefers-reduced-motion:no-preference){
+  .lg-refract .arch-lens{backdrop-filter:url(#lg-lens-liquid) saturate(1.7)}
+  .lg-refract .next-live.glass,.lg-refract .pp-card.glass{backdrop-filter:blur(16px) saturate(1.7) url(#lg-liquid)}
+}
 .arch-lens::before{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(60% 45% at 32% 18%,rgba(255,255,255,.6),rgba(255,255,255,0) 70%)}
 .arch-lens-ring{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 1px 1.5px rgba(20,40,28,.55))}
 .arch-lens-ring text{font:700 8.6px var(--display);letter-spacing:.02em;fill:currentColor}
@@ -550,10 +577,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
 .join-switch{margin:24px 0 0}
 .join-form{padding:clamp(24px,4vw,44px);background:var(--beige)}
 .sub-form{display:grid;gap:14px}
-.sub-form>label{font-size:15px;font-weight:600}
-.sub-row{display:grid;gap:12px}
-.sub-form input[type=email]{width:100%;min-height:52px;padding:0 16px;font:inherit;font-size:17px;color:var(--ink);background:var(--white);border:1px solid var(--line-strong);border-radius:var(--radius-sm)}
-.sub-form .button{width:100%;justify-content:center}
+.sub-field{display:grid;gap:7px}
+.sub-field label{font-size:15px;font-weight:600}
+.sub-form input:not([type=checkbox]){width:100%;min-height:52px;padding:0 16px;font:inherit;font-size:17px;color:var(--ink);background:var(--white);border:1px solid var(--line-strong);border-radius:var(--radius-sm);transition:border-color .2s,box-shadow .2s}
+.sub-form input:not([type=checkbox]):focus-visible{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(39,74,54,.14)}
+.sub-form .button{width:100%;justify-content:center;margin-top:4px}
 .sub-form .button:disabled{cursor:progress}
 .sub-consent{display:flex;align-items:flex-start;gap:10px;font-size:var(--fs-small);color:var(--muted)}
 .sub-consent input{flex:none;width:18px;height:18px;margin-top:3px}
@@ -565,8 +593,29 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
 
 /* ---------- 15. Появление при прокрутке ---------- */
 /* Контент виден по умолчанию; скрывается только то, что ниже экрана, и только после загрузки JS. */
-.reveal{transition:opacity .65s ease}
-.reveal.is-hidden{opacity:0}
+.reveal{transition:opacity .65s ease, transform .65s cubic-bezier(.2,.75,.2,1)}
+.reveal.is-hidden{opacity:0;transform:translateY(16px)}
+/* Каскад: прячем не весь блок, а его элементы, и проявляем их по очереди. */
+.reveal-stagger,.reveal-stagger.is-hidden{opacity:1;transform:none}
+@media(prefers-reduced-motion:no-preference){
+  .reveal-stagger.is-hidden .stagger-item{opacity:0}
+  .reveal-stagger:not(.is-hidden) .stagger-item{animation:rev-up .62s cubic-bezier(.2,.75,.2,1) both;animation-delay:calc(var(--i,0)*70ms)}
+}
+@keyframes rev-up{from{opacity:0;transform:translateY(22px) scale(.985)}}
+
+/* Открытие страницы: контент мягко всплывает при загрузке; на главной — пункты героя по очереди. */
+@media(prefers-reduced-motion:no-preference){
+  main#content{animation:page-in .55s cubic-bezier(.2,.75,.2,1) both}
+  .hero-copy > *{animation:hero-rise .72s cubic-bezier(.2,.75,.2,1) both}
+  .hero-copy > :nth-child(1){animation-delay:.06s}
+  .hero-copy > :nth-child(2){animation-delay:.13s}
+  .hero-copy > :nth-child(3){animation-delay:.20s}
+  .hero-copy > :nth-child(4){animation-delay:.27s}
+  .hero-copy > :nth-child(5){animation-delay:.34s}
+  .hero-copy > :nth-child(6){animation-delay:.41s}
+}
+@keyframes page-in{from{opacity:0;transform:translateY(10px)}}
+@keyframes hero-rise{from{opacity:0;transform:translateY(20px)}}
 
 /* ---------- 16. Анимации ---------- */
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
@@ -620,6 +669,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
 .adm-badge-on{background:var(--success-soft);color:var(--forest)}
 .adm-link-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 .adm-bar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:0 0 24px}
+/* таблица заявок */
+.adm-notice-soft{margin:0 0 20px;color:var(--muted);font-size:15px}
+.adm-notice-soft code{padding:1px 5px;background:var(--beige);border-radius:4px;font-size:13px}
+.adm-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+.adm-table{width:100%;border-collapse:collapse;font-size:14px;white-space:nowrap}
+.adm-table th,.adm-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line)}
+.adm-table th{background:var(--beige);font-weight:600;position:sticky;top:0}
+.adm-table tbody tr:last-child td{border-bottom:none}
+.adm-table tbody tr:hover{background:var(--beige)}
+.adm-table a{color:var(--green);text-decoration:none}
+.adm-table a:hover{text-decoration:underline}
+.adm-table .adm-badge{margin:0;font-size:12px;padding:3px 9px}
 .adm-search{display:flex;gap:8px}
 .adm-search input,.adm-field textarea{min-height:44px;padding:10px 14px;font:inherit;font-size:16px;color:var(--ink);background:var(--white);border:1px solid var(--line-strong);border-radius:var(--radius-sm)}
 .adm-field textarea{width:100%;resize:vertical;line-height:1.55}
@@ -696,8 +757,12 @@ html,body{overflow-x:clip}
 .is-live .live-dot{background:#d9482b;animation:live-pulse 1.8s ease-out infinite}
 @keyframes live-pulse{0%{box-shadow:0 0 0 0 rgba(217,72,43,.5)}100%{box-shadow:0 0 0 12px rgba(217,72,43,0)}}
 
-/* переходы между страницами: заголовок практики «перелетает» из карточки на страницу */
-::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
+/* переходы между страницами: заголовок практики «перелетает» из карточки на страницу,
+   а страница целиком мягко поднимается с проявлением (а не просто затухает). */
+::view-transition-old(root){animation:vt-out .32s cubic-bezier(.4,0,.2,1) both}
+::view-transition-new(root){animation:vt-in .44s cubic-bezier(.2,.75,.2,1) both}
+@keyframes vt-out{to{opacity:0;transform:translateY(-10px) scale(.992)}}
+@keyframes vt-in{from{opacity:0;transform:translateY(14px) scale(.992)}}
 ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.75,.2,1)}
 
 @media(prefers-reduced-motion:reduce){
