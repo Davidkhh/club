@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { site } from '@/lib/content';
 
-const links = [{ href: '/#about', label: 'О клубе' }, { href: '/#practices', label: 'Практики' }, { href: '/teachers', label: 'Преподаватели' }, { href: '/#schedule', label: 'Расписание' }, { href: '/#reviews', label: 'Отзывы' }, { href: '/#price', label: 'Участие' }];
+const links = [{ href: '/#about', label: 'О клубе' }, { href: '/#practices', label: 'Практики' }, { href: '/teachers', label: 'Преподаватели' }, { href: '/cards', label: 'Карты' }, { href: '/#schedule', label: 'Расписание' }, { href: '/#reviews', label: 'Отзывы' }, { href: '/#price', label: 'Участие' }];
 
 // Шапка держит постоянную высоту; при прокрутке внутренняя плашка превращается в парящую стеклянную капсулу.
 // Стекло капсулы — на подложке ::before, а не на самой плашке: иначе выпадающее меню (тоже стекло)
